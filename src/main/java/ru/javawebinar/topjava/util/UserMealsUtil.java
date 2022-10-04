@@ -32,19 +32,16 @@ public class UserMealsUtil {
                                                             LocalTime startTime,
                                                             LocalTime endTime,
                                                             int caloriesPerDay) {
-
         final Map<LocalDate, Integer> caloriesConsumedOnDate = new HashMap<>();
         for (UserMeal meal : meals) {
             caloriesConsumedOnDate.merge(meal.getDateTime().toLocalDate(), meal.getCalories(), Integer::sum);
         }
-
         final List<UserMealWithExcess> result = new ArrayList<>();
         for (UserMeal meal : meals) {
             if (TimeUtil.isBetweenHalfOpen(meal.getTime(), startTime, endTime)) {
-                result.add(new UserMealWithExcess(meal, caloriesConsumedOnDate.get(meal.getDate()) > caloriesPerDay));
+                result.add(createUserMealWithExcess(meal, caloriesConsumedOnDate.get(meal.getDate()) > caloriesPerDay));
             }
         }
-
         return result;
     }
 
@@ -52,13 +49,15 @@ public class UserMealsUtil {
                                                              LocalTime startTime,
                                                              LocalTime endTime,
                                                              int caloriesPerDay) {
-
         final Map<LocalDate, Integer> caloriesConsumedOnDate = meals.stream()
                 .collect(Collectors.toMap(UserMeal::getDate, UserMeal::getCalories, Integer::sum));
-
         return meals.stream()
                 .filter(meal -> TimeUtil.isBetweenHalfOpen(meal.getTime(), startTime, endTime))
-                .map(meal -> new UserMealWithExcess(meal, caloriesConsumedOnDate.get(meal.getDate()) > caloriesPerDay))
+                .map(meal -> createUserMealWithExcess(meal, caloriesConsumedOnDate.get(meal.getDate()) > caloriesPerDay))
                 .collect(Collectors.toList());
+    }
+
+    public static UserMealWithExcess createUserMealWithExcess(UserMeal meal, boolean excess) {
+        return new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess);
     }
 }
