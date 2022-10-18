@@ -4,15 +4,13 @@ import ru.javawebinar.topjava.model.Meal;
 
 import java.util.Collection;
 
-public interface MealDAO {
+public interface MealDao {
 
-    void create(Meal meal);
+    Meal save(Meal meal);
 
-    Meal read(Integer id);
+    Meal read(int id);
 
     Collection<Meal> readAll();
 
-    void update(Meal meal);
-
-    void delete(Integer id);
+    void delete(int id);
 }

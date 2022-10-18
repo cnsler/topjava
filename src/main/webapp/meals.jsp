@@ -14,7 +14,6 @@
 <form action="meals" method="post">
     <table border>
         <tr style="text-align: center">
-            <%--<th>ID</th>--%>
             <th>Date</th>
             <th>Description</th>
             <th>Calories</th>
@@ -24,10 +23,9 @@
         <c:forEach var="mealTo" items="${mealsTo}">
             <jsp:useBean id="mealTo" type="ru.javawebinar.topjava.model.MealTo"/>
             <tr style="color:${mealTo.excess ? 'red' : 'green'}">
-                    <%--<td>${mealTo.ID}</td>--%>
                 <td><fmt:parseDate value="${mealTo.dateTime}" pattern="yyyy-MM-dd'T'HH:mm"
                                    var="parsedDateTime" type="both"/>
-                    <fmt:formatDate pattern="dd.MM.yyyy HH:mm"
+                    <fmt:formatDate pattern="yyyy-MM-dd HH:mm"
                                     value="${parsedDateTime}"/></td>
                 <td>${mealTo.description}</td>
                 <td>${mealTo.calories}</td>
