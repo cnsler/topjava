@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 
 public class MealServlet extends HttpServlet {
 
@@ -33,21 +34,23 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
-        String forward;
+        String forward = "";
         if (action == null) {
             forward = MEALS;
             req.setAttribute("mealsTo", MealsUtil.filteredByStreams(mealDao.readAll(),
                     LocalTime.MIN, LocalTime.MAX, MealsUtil.CALORIES));
         } else {
+            Meal meal = new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 0);
             switch (action) {
                 case "delete":
                     mealDao.delete(getIdOrNull(req));
                     resp.sendRedirect("meals");
                     return;
                 case "update":
-                    req.setAttribute("meal", mealDao.read(getIdOrNull(req)));
+                    meal = mealDao.read(getIdOrNull(req));
                 default:
                     forward = MEALS_EDIT;
+                    req.setAttribute("meal", meal);
             }
         }
         req.getRequestDispatcher(forward).forward(req, resp);
