@@ -12,8 +12,15 @@
     <li><a href="meals">Meals</a></li>
 </ul>-->
 <form method="post" action="users">
-    <button type="submit" name="userId" value="1">Login as Admin</button>
-    <button type="submit" name="userId" value="2">Login as User</button>
+    <!--<button type="submit" name="userId" value="1">Login as Admin</button>
+    <button type="submit" name="userId" value="2">Login as User</button>-->
+    <label>Select user:
+        <select name="userId">
+            <option value="1">Admin</option>
+            <option value="2">User</option>
+        </select>
+    </label>
+    <button type="submit">Login</button>
 </form>
 </body>
 </html>

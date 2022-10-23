@@ -33,8 +33,12 @@ public class InMemoryUserRepository implements UserRepository {
     @Override
     public User save(User user) {
         log.info("save {}", user);
-        if (user.isNew()) user.setId(counter.incrementAndGet());
-        return usersMap.merge(user.getId(), user, (oldUser, newUser) -> newUser);
+        if (user.isNew()) {
+            user.setId(counter.incrementAndGet());
+            usersMap.put(user.getId(), user);
+            return user;
+        }
+        return usersMap.computeIfPresent(user.getId(), (id, oldUser) -> user);
     }
 
     @Override

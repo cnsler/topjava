@@ -19,25 +19,28 @@ import java.util.stream.Collectors;
 public class MealsUtil {
     public static final int DEFAULT_CALORIES_PER_DAY = 2000;
 
-    public static final List<Meal> meals = Arrays.asList(
-            new Meal(LocalDateTime.of(2021, Month.JANUARY, 30, 10, 0), "ADMIN Завтрак", 500, 1),
-            new Meal(LocalDateTime.of(2021, Month.JANUARY, 30, 13, 0), "ADMIN Обед", 1000, 1),
-            new Meal(LocalDateTime.of(2021, Month.JANUARY, 30, 20, 0), "ADMIN Ужин", 500, 1),
-            new Meal(LocalDateTime.of(2021, Month.JANUARY, 31, 0, 0), "ADMIN Еда на граничное значение", 100, 1),
-            new Meal(LocalDateTime.of(2021, Month.JANUARY, 31, 10, 0), "ADMIN Завтрак", 1000, 1),
-            new Meal(LocalDateTime.of(2021, Month.JANUARY, 31, 13, 0), "ADMIN Обед", 500, 1),
-            new Meal(LocalDateTime.of(2021, Month.JANUARY, 31, 20, 0), "ADMIN Ужин", 410, 1),
-            new Meal(LocalDateTime.of(2022, Month.JANUARY, 30, 10, 0), "USER Завтрак", 500, 2),
-            new Meal(LocalDateTime.of(2022, Month.JANUARY, 30, 13, 0), "USER Обед", 1000, 2),
-            new Meal(LocalDateTime.of(2022, Month.JANUARY, 30, 20, 0), "USER Ужин", 500, 2),
-            new Meal(LocalDateTime.of(2022, Month.JANUARY, 31, 0, 0), "USER Еда на граничное значение", 100, 2),
-            new Meal(LocalDateTime.of(2022, Month.JANUARY, 31, 10, 0), "USER Завтрак", 1000, 2),
-            new Meal(LocalDateTime.of(2022, Month.JANUARY, 31, 13, 0), "USER Обед", 500, 2),
-            new Meal(LocalDateTime.of(2022, Month.JANUARY, 31, 20, 0), "USER Ужин", 410, 2)
+    public static final List<Meal> adminMeals = Arrays.asList(
+            new Meal(LocalDateTime.of(2021, Month.JANUARY, 30, 10, 0), "ADMIN Завтрак", 500),
+            new Meal(LocalDateTime.of(2021, Month.JANUARY, 30, 13, 0), "ADMIN Обед", 1000),
+            new Meal(LocalDateTime.of(2021, Month.JANUARY, 30, 20, 0), "ADMIN Ужин", 500),
+            new Meal(LocalDateTime.of(2021, Month.JANUARY, 31, 0, 0), "ADMIN Еда на граничное значение", 100),
+            new Meal(LocalDateTime.of(2021, Month.JANUARY, 31, 10, 0), "ADMIN Завтрак", 1000),
+            new Meal(LocalDateTime.of(2021, Month.JANUARY, 31, 13, 0), "ADMIN Обед", 500),
+            new Meal(LocalDateTime.of(2021, Month.JANUARY, 31, 20, 0), "ADMIN Ужин", 410)
+    );
+
+    public static final List<Meal> userMeals = Arrays.asList(
+            new Meal(LocalDateTime.of(2022, Month.JANUARY, 30, 10, 0), "USER Завтрак", 500),
+            new Meal(LocalDateTime.of(2022, Month.JANUARY, 30, 13, 0), "USER Обед", 1000),
+            new Meal(LocalDateTime.of(2022, Month.JANUARY, 30, 20, 0), "USER Ужин", 500),
+            new Meal(LocalDateTime.of(2022, Month.JANUARY, 31, 0, 0), "USER Еда на граничное значение", 100),
+            new Meal(LocalDateTime.of(2022, Month.JANUARY, 31, 10, 0), "USER Завтрак", 1000),
+            new Meal(LocalDateTime.of(2022, Month.JANUARY, 31, 13, 0), "USER Обед", 500),
+            new Meal(LocalDateTime.of(2022, Month.JANUARY, 31, 20, 0), "USER Ужин", 410)
     );
 
     public static final List<User> users = Arrays.asList(
-            new User(null, "admin", "admin@gmail.com", "admin", Role.ADMIN),
+            new User(null, "admin", "admin@gmail.com", "admin", Role.ADMIN, Role.USER),
             new User(null, "user", "user@gmail.com", "user", Role.USER)
     );
 

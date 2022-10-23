@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 public class DateTimeUtil {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -22,25 +21,13 @@ public class DateTimeUtil {
     }
 
     public static LocalDate parseDate(String date) {
-        if (date == null || date.isEmpty()) {
-            return null;
-        }
-        try {
-            return LocalDate.parse(date);
-        } catch (DateTimeParseException e) {
-            return null;
-        }
+        if (date == null || date.isEmpty()) return null;
+        return LocalDate.parse(date);
     }
 
     public static LocalTime parseTime(String time) {
-        if (time == null || time.isEmpty()) {
-            return null;
-        }
-        try {
-            return LocalTime.parse(time);
-        } catch (DateTimeParseException e) {
-            return null;
-        }
+        if (time == null || time.isEmpty()) return null;
+        return LocalTime.parse(time);
     }
 }
 

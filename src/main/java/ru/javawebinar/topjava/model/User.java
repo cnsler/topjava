@@ -1,9 +1,10 @@
 package ru.javawebinar.topjava.model;
 
 import org.springframework.util.CollectionUtils;
-import ru.javawebinar.topjava.web.SecurityUtil;
 
 import java.util.*;
+
+import static ru.javawebinar.topjava.util.MealsUtil.DEFAULT_CALORIES_PER_DAY;
 
 public class User extends AbstractNamedEntity {
 
@@ -17,10 +18,10 @@ public class User extends AbstractNamedEntity {
 
     private Set<Role> roles;
 
-    private int caloriesPerDay = SecurityUtil.getAuthUserCaloriesPerDay();
+    private int caloriesPerDay = DEFAULT_CALORIES_PER_DAY;
 
     public User(Integer id, String name, String email, String password, Role... roles) {
-        this(id, name, email, password, SecurityUtil.getAuthUserCaloriesPerDay(), true, Arrays.asList((roles)));
+        this(id, name, email, password, DEFAULT_CALORIES_PER_DAY, true, Arrays.asList((roles)));
     }
 
     public User(Integer id, String name, String email, String password, int caloriesPerDay, boolean enabled, Collection<Role> roles) {
