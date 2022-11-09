@@ -14,14 +14,14 @@ import static ru.javawebinar.topjava.UserTestData.*;
 public class DataJpaUserServiceTest extends UserServiceTest {
 
     @Test
-    public void getByIdWithMeals() {
+    public void getWithMeals() {
         User userWithMeals = service.getWithMeals(USER_ID);
         USER_MATCHER.assertMatch(userWithMeals, UserTestData.userWithMeals);
         MEAL_MATCHER.assertMatch(userWithMeals.getMeals(), UserTestData.userWithMeals.getMeals());
     }
 
     @Test
-    public void getByIdWithEmptyMeals() {
+    public void getWithEmptyMeals() {
         User guest = service.getWithMeals(GUEST_ID);
         USER_MATCHER.assertMatch(guest, UserTestData.guest);
         MEAL_MATCHER.assertMatch(guest.getMeals(), UserTestData.guest.getMeals());
