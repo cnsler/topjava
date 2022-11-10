@@ -36,17 +36,4 @@ public class UserTestData {
         updated.setRoles(Collections.singletonList(Role.ADMIN));
         return updated;
     }
-
-    static {
-        userWithMeals.setMeals(List.of(
-                MealTestData.meal7,
-                MealTestData.meal6,
-                MealTestData.meal5,
-                MealTestData.meal4,
-                MealTestData.meal3,
-                MealTestData.meal2,
-                MealTestData.meal1));
-
-        guest.setMeals(List.of());
-    }
 }

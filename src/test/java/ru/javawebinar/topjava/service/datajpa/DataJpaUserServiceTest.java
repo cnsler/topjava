@@ -2,6 +2,7 @@ package ru.javawebinar.topjava.service.datajpa;
 
 import org.junit.Test;
 import org.springframework.test.context.ActiveProfiles;
+import ru.javawebinar.topjava.MealTestData;
 import ru.javawebinar.topjava.Profiles;
 import ru.javawebinar.topjava.UserTestData;
 import ru.javawebinar.topjava.model.User;
@@ -17,13 +18,13 @@ public class DataJpaUserServiceTest extends UserServiceTest {
     public void getWithMeals() {
         User userWithMeals = service.getWithMeals(USER_ID);
         USER_MATCHER.assertMatch(userWithMeals, UserTestData.userWithMeals);
-        MEAL_MATCHER.assertMatch(userWithMeals.getMeals(), UserTestData.userWithMeals.getMeals());
+        MEAL_MATCHER.assertMatch(userWithMeals.getMeals(), MealTestData.meals);
     }
 
     @Test
     public void getWithEmptyMeals() {
         User guest = service.getWithMeals(GUEST_ID);
         USER_MATCHER.assertMatch(guest, UserTestData.guest);
-        MEAL_MATCHER.assertMatch(guest.getMeals(), UserTestData.guest.getMeals());
+        MEAL_MATCHER.assertMatch(guest.getMeals(), MealTestData.emptyMeals);
     }
 }
