@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import ru.javawebinar.topjava.model.Meal;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,15 +20,16 @@ import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalDate;
 import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalTime;
 
 @Controller
+@RequestMapping("meals")
 public class JspMealController extends AbstractMealController {
 
-    @GetMapping("meals")
+    @GetMapping
     public String getAll(Model model) {
         model.addAttribute("meals", super.getAll());
         return "meals";
     }
 
-    @GetMapping("meals/filter")
+    @GetMapping("filter")
     public String getAllFiltered(Model model, HttpServletRequest request) {
         LocalDate startDate = parseLocalDate(request.getParameter("startDate"));
         LocalDate endDate = parseLocalDate(request.getParameter("endDate"));
@@ -37,25 +39,25 @@ public class JspMealController extends AbstractMealController {
         return "meals";
     }
 
-    @GetMapping("meals/create")
+    @GetMapping("create")
     public String create(Model model) {
         model.addAttribute("meal", new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000));
         return "mealForm";
     }
 
-    @GetMapping("meals/update")
+    @GetMapping("update")
     public String update(Model model, HttpServletRequest request) {
         model.addAttribute("meal", super.get(getId(request)));
         return "mealForm";
     }
 
-    @GetMapping("meals/delete")
+    @GetMapping("delete")
     public String delete(HttpServletRequest request) {
         super.delete(getId(request));
         return "redirect:/meals";
     }
 
-    @PostMapping("meals")
+    @PostMapping
     public String save(HttpServletRequest request) throws UnsupportedEncodingException {
         request.setCharacterEncoding("UTF-8");
         Meal meal = new Meal(
