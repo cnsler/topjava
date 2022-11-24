@@ -37,7 +37,7 @@ public class JdbcUserRepository implements UserRepository {
                         rs.getDate("registered"),
                         new HashSet<>());
                 user = newUser;
-                result.computeIfAbsent(id, s -> newUser);
+                result.put(id, user);
             }
             String role = rs.getString("role");
             if (role != null && !role.isEmpty()) {
@@ -123,6 +123,7 @@ public class JdbcUserRepository implements UserRepository {
 
     private void addRoles(User user) {
         List<Role> roles = new ArrayList<>(user.getRoles());
+        if (roles.isEmpty()) return;
         jdbcTemplate.batchUpdate("INSERT INTO user_roles (user_id, role) VALUES (?, ?)",
                 new BatchPreparedStatementSetter() {
                     @Override
