@@ -11,8 +11,6 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 import ru.javawebinar.topjava.web.AbstractControllerTest;
 import ru.javawebinar.topjava.web.json.JsonUtil;
 
-import java.time.LocalDateTime;
-
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -20,7 +18,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
-import static ru.javawebinar.topjava.util.MealsUtil.getFilteredTos;
 import static ru.javawebinar.topjava.util.MealsUtil.getTos;
 import static ru.javawebinar.topjava.web.SecurityUtil.authUserCaloriesPerDay;
 
@@ -53,7 +50,7 @@ class MealRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MEAL_TO_MATCHER.contentJson(getTos(meals, authUserCaloriesPerDay())));
+                .andExpect(MEAL_TO_MATCHER.contentJson(getTos(MEALS, authUserCaloriesPerDay())));
     }
 
     @Test
@@ -83,14 +80,21 @@ class MealRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getBetween() throws Exception {
-        perform(get(REST_URL +
-                "getBetween?startDateTime=2020-01-30T10:00&endDateTime=2020-01-31T13:00"))
+        perform(get(REST_URL + "getBetween?" +
+                "startDate=2020-01-30&startTime=10:00&endDate=2020-01-31&endTime=13:00"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MEAL_TO_MATCHER.contentJson(getFilteredTos(
-                        meals, authUserCaloriesPerDay(),
-                        LocalDateTime.parse("2020-01-30T10:00").toLocalTime(),
-                        LocalDateTime.parse("2020-01-31T13:00").toLocalTime())));
+                .andExpect(MEAL_TO_MATCHER.contentJson(MEALS_TO_BETWEEN));
+    }
+
+    @Test
+    void getBetweenWithNull() throws Exception {
+        perform(get(REST_URL + "getBetween?" +
+                "endTime=13:00"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(MEAL_TO_MATCHER.contentJson(MEALS_TO_BETWEEN_WITH_NULL));
     }
 }
