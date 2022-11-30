@@ -36,28 +36,28 @@ class AdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getWithMeals() throws Exception {
-        perform(get(REST_URL + USER_ID + "/with-meals"))
+        perform(get(REST_URL + ADMIN_ID + "/with-meals"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(USER_WITH_MEALS_MATCHER.contentJson(user));
+                .andExpect(USER_WITH_MEALS_MATCHER.contentJson(admin));
     }
 
     @Test
     void getByEmail() throws Exception {
-        perform(get(REST_URL + "by-email?email=" + user.getEmail()))
+        perform(get(REST_URL + "by-email?email=" + admin.getEmail()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(USER_MATCHER.contentJson(user));
+                .andExpect(USER_MATCHER.contentJson(admin));
     }
 
     @Test
     void deleteUser() throws Exception {
-        perform(delete(REST_URL + USER_ID))
+        perform(delete(REST_URL + ADMIN_ID))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        assertThrows(NotFoundException.class, () -> userService.get(USER_ID));
+        assertThrows(NotFoundException.class, () -> userService.get(ADMIN_ID));
     }
 
     @Test

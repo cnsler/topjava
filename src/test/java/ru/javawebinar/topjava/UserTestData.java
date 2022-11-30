@@ -5,7 +5,9 @@ import ru.javawebinar.topjava.model.User;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
+import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.model.AbstractBaseEntity.START_SEQ;
 
 public class UserTestData {
@@ -22,7 +24,8 @@ public class UserTestData {
     public static final User guest = new User(GUEST_ID, "Guest", "guest@gmail.com", "guest");
 
     static {
-        user.setMeals(MealTestData.MEALS);
+        admin.setMeals(List.of(adminMeal2, adminMeal1));
+        user.setMeals(MEALS);
     }
 
     public static User getNew() {
