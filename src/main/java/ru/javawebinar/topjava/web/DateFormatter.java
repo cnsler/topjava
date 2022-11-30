@@ -1,4 +1,4 @@
-package ru.javawebinar.topjava.util;
+package ru.javawebinar.topjava.web;
 
 import org.springframework.format.Formatter;
 
@@ -11,7 +11,7 @@ public class DateFormatter implements Formatter<LocalDate> {
 
     @Override
     public LocalDate parse(String text, Locale locale) throws ParseException {
-        return DateTimeUtil.parseLocalDate(text);
+        return LocalDate.parse(text);
     }
 
     @Override
