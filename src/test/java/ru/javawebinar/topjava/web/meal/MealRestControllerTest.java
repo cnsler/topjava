@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
@@ -37,8 +36,8 @@ class MealRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + MEAL1_ID))
+    void deleteMeal() throws Exception {
+        perform(delete(REST_URL + MEAL1_ID))
                 .andDo(print())
                 .andExpect(status().isNoContent());
         assertThrows(NotFoundException.class, () -> mealService.get(MEAL1_ID, USER_ID));
@@ -80,7 +79,7 @@ class MealRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getBetween() throws Exception {
-        perform(get(REST_URL + "getBetween?" +
+        perform(get(REST_URL + "filter?" +
                 "startDate=2020-01-30&startTime=10:00&endDate=2020-01-31&endTime=13:00"))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -90,7 +89,7 @@ class MealRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getBetweenWithNull() throws Exception {
-        perform(get(REST_URL + "getBetween?" +
+        perform(get(REST_URL + "filter?" +
                 "endTime=13:00"))
                 .andDo(print())
                 .andExpect(status().isOk())
