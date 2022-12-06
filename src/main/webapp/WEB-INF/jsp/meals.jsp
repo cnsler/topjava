@@ -39,11 +39,11 @@
                 </form>
             </div>
             <div class="card-footer text-right">
-                <button form="filterForm" type="reset" class="btn btn-danger" onclick="updateTable()">
+                <button class="btn btn-danger" onclick="resetFilter()">
                     <span class="fa fa-remove"></span>
                     <spring:message code="meal.reset"/>
                 </button>
-                <button class="btn btn-primary" onclick="filterTable()">
+                <button class="btn btn-primary" onclick="ctx.updateTable()">
                     <span class="fa fa-filter"></span>
                     <spring:message code="meal.filter"/>
                 </button>
@@ -112,7 +112,7 @@
                     <span class="fa fa-close"></span>
                     <spring:message code="common.cancel"/>
                 </button>
-                <button type="button" class="btn btn-primary" onclick="saveMeal()">
+                <button type="button" class="btn btn-primary" onclick="save()">
                     <span class="fa fa-check"></span>
                     <spring:message code="common.save"/>
                 </button>
