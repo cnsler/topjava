@@ -47,3 +47,15 @@ function filterTable() {
         ctx.datatableApi.clear().rows.add(data).draw();
     });
 }
+
+function saveMeal() {
+    $.ajax({
+        type: "POST",
+        url: ctx.ajaxUrl,
+        data: form.serialize()
+    }).done(function () {
+        $("#editRow").modal("hide");
+        filterTable();
+        successNoty("Saved");
+    });
+}
