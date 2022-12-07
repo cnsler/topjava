@@ -48,3 +48,14 @@ $(function () {
         })
     );
 });
+
+function enable(checkbox) {
+    const enabled = checkbox.checked;
+    const id = $(checkbox).closest("tr").attr("id");
+    $.ajax({
+        type: "PATCH",
+        url: userAjaxUrl + id + "?enabled=" + enabled
+    }).done(function () {
+        successNoty("Record " + (enabled ? "enabled" : "disabled"));
+    });
+}
