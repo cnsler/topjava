@@ -55,6 +55,7 @@ function enable(checkbox, id) {
         type: "PATCH",
         url: userAjaxUrl + id + "?enabled=" + enabled
     }).done(function () {
+        $(checkbox).closest("tr").attr("data-user-enabled", enabled);
         successNoty("Record " + (enabled ? "enabled" : "disabled"));
     });
 }
