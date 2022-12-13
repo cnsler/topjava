@@ -54,7 +54,7 @@ $(function () {
                     "data": "dateTime",
                     "render": function (date, type, row) {
                         if (type === "display") {
-                            return date.slice(-date.length, -3).replace('T', ' ');
+                            return formatDateTime(date);
                         }
                         return date;
                     }

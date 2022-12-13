@@ -18,6 +18,10 @@ function add() {
     $("#editRow").modal();
 }
 
+function formatDateTime(dateTime) {
+    return dateTime.slice(-dateTime.length, -3).replace('T', ' ');
+}
+
 function updateRow(id) {
     form.find(":input").val("");
     $("#modalTitle").html(i18n["editTitle"]);
@@ -25,7 +29,7 @@ function updateRow(id) {
         $.each(data, function (key, value) {
             form.find("input[name='" + key + "']")
                 .val(key === "dateTime"
-                    ? value.slice(-value.length, -3).replace('T', ' ')
+                    ? formatDateTime(value)
                     : value);
         });
         $('#editRow').modal();
