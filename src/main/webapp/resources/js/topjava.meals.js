@@ -25,7 +25,8 @@ $(function () {
                 "dataSrc": "",
             },
             "language": {
-                "url": "resources/i18n/ru.json"
+                "search": i18n["common.search"],
+                "info": i18n["common.info"]
             },
             "paging": false,
             "info": true,

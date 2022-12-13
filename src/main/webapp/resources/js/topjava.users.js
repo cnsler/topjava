@@ -31,6 +31,10 @@ $(function () {
                 "url": userAjaxUrl,
                 "dataSrc": ""
             },
+            "language": {
+                "search": i18n["common.search"],
+                "info": i18n["common.info"]
+            },
             "paging": false,
             "info": true,
             "columns": [
