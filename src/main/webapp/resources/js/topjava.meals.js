@@ -18,6 +18,7 @@ function clearFilter() {
 }
 
 $(function () {
+    $.datetimepicker.setLocale(navigator.language);
     $("#dateTime").datetimepicker({
         format: 'Y-m-d H:m'
     });
