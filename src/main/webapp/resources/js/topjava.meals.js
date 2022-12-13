@@ -24,6 +24,9 @@ $(function () {
                 "url": mealAjaxUrl,
                 "dataSrc": "",
             },
+            "language": {
+                "url": "resources/i18n/ru.json"
+            },
             "paging": false,
             "info": true,
             "columns": [
