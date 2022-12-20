@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import ru.javawebinar.topjava.UserTestData;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.UserService;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
@@ -102,7 +101,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(admin))
-                .content(jsonWithPassword(newUser, newUser.getPassword())))
+                .content(jsonWithPassword(newUser, newUser.getPassword()))).andDo(print())
                 .andExpect(status().isCreated());
 
         User created = USER_MATCHER.readFromJson(action);
@@ -142,5 +141,27 @@ class AdminRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isNoContent());
 
         assertFalse(userService.get(USER_ID).isEnabled());
+    }
+
+    @Test
+    void createInvalid() throws Exception {
+        User invalidUser = new User(null, null, null, "", 0);
+        perform(MockMvcRequestBuilders
+                .post(REST_URL).with(userHttpBasic(admin))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonWithPassword(invalidUser, invalidUser.getPassword())))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    void updateInvalid() throws Exception {
+        User invalidUser = new User(null, null, null, "", 0);
+        perform(MockMvcRequestBuilders
+                .put(REST_URL + USER_ID).with(userHttpBasic(admin))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonWithPassword(invalidUser, invalidUser.getPassword())))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
     }
 }
