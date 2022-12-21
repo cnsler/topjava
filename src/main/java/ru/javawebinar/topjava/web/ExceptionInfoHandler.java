@@ -50,6 +50,9 @@ public class ExceptionInfoHandler {
         if (e.getMessage().contains("users_unique_email_idx")) {
             return new ErrorInfo(req.getRequestURL(), VALIDATION_ERROR,
                     List.of(messageSource.getMessage("user.unique", null, LocaleContextHolder.getLocale())));
+        } else if (e.getMessage().contains("meals_unique_user_datetime_idx")) {
+            return new ErrorInfo(req.getRequestURL(), VALIDATION_ERROR,
+                    List.of(messageSource.getMessage("meal.unique", null, LocaleContextHolder.getLocale())));
         }
         return logAndGetErrorInfo(req, e, true, DATA_ERROR);
     }
