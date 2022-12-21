@@ -1,7 +1,7 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <nav class="navbar navbar-dark bg-dark py-0">
     <div class="container">
@@ -26,5 +26,7 @@
                 </button>
             </form:form>
         </sec:authorize>
+        <a href='<spring:url value="${requestScope['javax.servlet.forward.servlet_path']}"/>?lang=en'>English</a>
+        <a href='<spring:url value="${requestScope['javax.servlet.forward.servlet_path']}"/>?lang=ru'>Русский</a>
     </div>
 </nav>
