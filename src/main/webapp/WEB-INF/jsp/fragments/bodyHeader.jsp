@@ -2,6 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <nav class="navbar navbar-dark bg-dark py-0">
     <div class="container">
@@ -26,7 +27,15 @@
                 </button>
             </form:form>
         </sec:authorize>
-        <a href='<spring:url value="${requestScope['javax.servlet.forward.servlet_path']}"/>?lang=en'>English</a>
-        <a href='<spring:url value="${requestScope['javax.servlet.forward.servlet_path']}"/>?lang=ru'>Русский</a>
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                ${pageContext.response.locale}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <c:set var="currentUrl" value="${requestScope['javax.servlet.forward.request_uri']}"/>
+                <a class="dropdown-item" href="${currentUrl}?lang=en">English</a>
+                <a class="dropdown-item" href="${currentUrl}?lang=ru">Русский</a>
+            </div>
+        </div>
     </div>
 </nav>
