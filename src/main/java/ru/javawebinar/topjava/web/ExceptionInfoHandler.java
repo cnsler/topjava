@@ -11,7 +11,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +25,7 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 import javax.servlet.http.HttpServletRequest;
 
 import java.util.List;
+import java.util.Locale;
 
 import static ru.javawebinar.topjava.util.exception.ErrorType.*;
 
@@ -47,14 +47,7 @@ public class ExceptionInfoHandler {
     @ResponseStatus(HttpStatus.CONFLICT)  // 409
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ErrorInfo conflict(HttpServletRequest req, DataIntegrityViolationException e) {
-        if (e.getMessage().contains("users_unique_email_idx")) {
-            return new ErrorInfo(req.getRequestURL(), VALIDATION_ERROR,
-                    List.of(messageSource.getMessage("user.unique", null, LocaleContextHolder.getLocale())));
-        } else if (e.getMessage().contains("meals_unique_user_datetime_idx")) {
-            return new ErrorInfo(req.getRequestURL(), VALIDATION_ERROR,
-                    List.of(messageSource.getMessage("meal.unique", null, LocaleContextHolder.getLocale())));
-        }
-        return logAndGetErrorInfo(req, e, true, DATA_ERROR);
+        return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR);
     }
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)  // 422
@@ -65,8 +58,8 @@ public class ExceptionInfoHandler {
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler(BindException.class)
-    public ErrorInfo bindingValidationError(HttpServletRequest req, BindingResult result) {
-        return new ErrorInfo(req.getRequestURL(), VALIDATION_ERROR, ValidationUtil.getBindingErrors(result));
+    public ErrorInfo bindingValidationError(HttpServletRequest req, BindException e) {
+        return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR);
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -76,13 +69,39 @@ public class ExceptionInfoHandler {
     }
 
     //    https://stackoverflow.com/questions/538870/should-private-helper-methods-be-static-if-they-can-be-static
-    private static ErrorInfo logAndGetErrorInfo(HttpServletRequest req, Exception e, boolean logException, ErrorType errorType) {
+    private ErrorInfo logAndGetErrorInfo(HttpServletRequest req, Exception e, boolean logException, ErrorType errorType) {
         Throwable rootCause = ValidationUtil.getRootCause(e);
         if (logException) {
             log.error(errorType + " at request " + req.getRequestURL(), rootCause);
         } else {
             log.warn("{} at request  {}: {}", errorType, req.getRequestURL(), rootCause.toString());
         }
-        return new ErrorInfo(req.getRequestURL(), errorType, List.of(rootCause.getMessage()));
+        return new ErrorInfo(req.getRequestURL(), getErrorTypeMessage(errorType), getErrorMessage(e));
+    }
+
+    private List<String> getErrorMessage(Exception e) {
+        if (e.getClass() == BindException.class) {
+            return ((BindException) e).getFieldErrors().stream()
+                    .map(fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage()))
+                    .toList();
+        } else if (e.getClass() == DataIntegrityViolationException.class) {
+            Locale ctxLocale = LocaleContextHolder.getLocale();
+            if (e.getMessage().contains("users_unique_email_idx")) {
+                return List.of(messageSource.getMessage("user.unique", null, ctxLocale));
+            } else if (e.getMessage().contains("meals_unique_user_datetime_idx")) {
+                return List.of(messageSource.getMessage("meal.unique", null, ctxLocale));
+            }
+        }
+        return List.of(ValidationUtil.getRootCause(e).getMessage());
+    }
+
+    private String getErrorTypeMessage(ErrorType errorType) {
+        Locale ctxLocale = LocaleContextHolder.getLocale();
+        return switch (errorType) {
+            case DATA_NOT_FOUND -> messageSource.getMessage("error.dateNotFound", null, ctxLocale);
+            case DATA_ERROR -> messageSource.getMessage("error.data", null, ctxLocale);
+            case APP_ERROR -> messageSource.getMessage("error.app", null, ctxLocale);
+            case VALIDATION_ERROR -> messageSource.getMessage("error.validation", null, ctxLocale);
+        };
     }
 }
