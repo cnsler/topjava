@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.UserService;
 import ru.javawebinar.topjava.to.UserTo;
@@ -108,5 +110,30 @@ class ProfileRestControllerTest extends AbstractControllerTest {
                 .content(JsonUtil.writeValue(invalidUpdatedUserTo)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @Transactional(propagation = Propagation.NEVER)
+    void registerEmailDuplicate() throws Exception {
+        UserTo duplicateNewUserTo = new UserTo(null, "Duplicate", user.getEmail(), "password", 1500);
+        perform(MockMvcRequestBuilders
+                .post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(duplicateNewUserTo)))
+                .andDo(print())
+                .andExpect(status().isConflict());
+    }
+
+    @Test
+    @Transactional(propagation = Propagation.NEVER)
+    void updateEmailDuplicate() throws Exception {
+        UserTo duplicateUpdatedUserTo = new UserTo(USER_ID, "Duplicate", admin.getEmail(), "password", 1500);
+        perform(MockMvcRequestBuilders
+                .put(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(user))
+                .content(JsonUtil.writeValue(duplicateUpdatedUserTo)))
+                .andDo(print())
+                .andExpect(status().isConflict());
     }
 }

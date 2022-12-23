@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
@@ -147,5 +149,31 @@ class MealRestControllerTest extends AbstractControllerTest {
                 .content(JsonUtil.writeValue(invalidMeal)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @Transactional(propagation = Propagation.NEVER)
+    void createDuplicateDateTime() throws Exception {
+        Meal duplicatedMeal = new Meal(null, meal1.getDateTime(), "Duplicate", 100);
+        perform(MockMvcRequestBuilders
+                .post(REST_URL)
+                .with(userHttpBasic(user))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(duplicatedMeal)))
+                .andDo(print())
+                .andExpect(status().isConflict());
+    }
+
+    @Test
+    @Transactional(propagation = Propagation.NEVER)
+    void updateDuplicateDateTime() throws Exception {
+        Meal duplicatedMeal = new Meal(MEAL1_ID, meal2.getDateTime(), "Duplicate", 100);
+        perform(MockMvcRequestBuilders
+                .put(REST_URL + MEAL1_ID)
+                .with(userHttpBasic(user))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(duplicatedMeal)))
+                .andDo(print())
+                .andExpect(status().isConflict());
     }
 }
