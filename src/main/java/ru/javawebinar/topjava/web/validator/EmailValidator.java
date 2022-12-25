@@ -8,6 +8,8 @@ import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 import ru.javawebinar.topjava.to.UserTo;
 
+import java.util.Objects;
+
 @Component
 public class EmailValidator implements Validator {
 
@@ -23,7 +25,7 @@ public class EmailValidator implements Validator {
     public void validate(Object target, Errors errors) {
         String email = ((UserTo) target).getEmail();
         User user = userRepository.getByEmail(email.toLowerCase());
-        if (user != null) {
+        if (user != null  && !Objects.equals(user.getId(), ((UserTo) target).getId())) {
             errors.rejectValue("email", "user.unique");
         }
     }
