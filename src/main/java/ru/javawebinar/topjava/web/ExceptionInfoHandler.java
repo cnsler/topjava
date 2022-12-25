@@ -48,16 +48,11 @@ public class ExceptionInfoHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ErrorInfo conflict(HttpServletRequest req, DataIntegrityViolationException e) {
         Locale ctxLocale = LocaleContextHolder.getLocale();
-        String errorCode = null;
-        if (e.getMessage().contains("users_unique_email_idx")) {
-            errorCode = "user.unique";
-        } else if (e.getMessage().contains("meals_unique_user_datetime_idx")) {
-            errorCode = "meal.unique";
+        if (e.getMessage().contains("meals_unique_user_datetime_idx")) {
+            return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR,
+                    List.of(messageSource.getMessage("meal.unique", null, ctxLocale)));
         }
-        return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR,
-                errorCode != null
-                        ? List.of(messageSource.getMessage(errorCode, null, ctxLocale))
-                        : null);
+        return logAndGetErrorInfo(req, e, false, DATA_ERROR, null);
     }
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)  // 422
