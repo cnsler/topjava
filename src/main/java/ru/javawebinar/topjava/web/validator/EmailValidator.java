@@ -22,7 +22,7 @@ public class EmailValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         String email = ((UserTo) target).getEmail();
-        User user = userRepository.getByEmail(email);
+        User user = userRepository.getByEmail(email.toLowerCase());
         if (user != null) {
             errors.rejectValue("email", "user.unique");
         }
