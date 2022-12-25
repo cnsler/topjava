@@ -64,8 +64,12 @@ public class ExceptionInfoHandler {
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler(BindException.class)
     public ErrorInfo bindingValidationError(HttpServletRequest req, BindException e) {
+        Locale ctxLocale = LocaleContextHolder.getLocale();
         List<String> errorMessages = e.getFieldErrors().stream()
-                .map(fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage()))
+                .map(fe -> String.format("[%s] %s", fe.getField(),
+                        fe.getDefaultMessage() != null
+                                ? fe.getDefaultMessage()
+                                : messageSource.getMessage(fe.getCode(), null, ctxLocale)))
                 .toList();
         return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR, errorMessages);
     }
