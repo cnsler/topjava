@@ -10,7 +10,7 @@
 - В ответе на [Why is SELECT * considered harmful?](https://stackoverflow.com/questions/3639861) есть случаи, когда она допустима (наш случай): `when "*" means "a row"`
 
 #### `SpringMain, InMemoryAdminRestControllerTest, InMemoryAdminRestControllerSpringTest` починим в патче `4_7_create_inmemory_test_ctx` (видео 4)
-[
+
 #### **Apply 4_1_HW3.patch**]()
 
 ### [Сравнение времени выполнения для разных индексов](meals_index.md)
@@ -98,7 +98,7 @@
   -  [JPA и Hibernate в вопросах и ответах](http://habrahabr.ru/post/265061/)
   - [Hibernate — о чем молчат туториалы](https://habr.com/ru/post/416851/)
   - [Наследование в Hibernate: выбор стратегии](https://habrahabr.ru/post/337488/)
-  - [JPA EntityManager: управляем сущностями](https://easyjava.ru/data/jpa/jpa-entitymanager-upravlyaem-sushhnostyami/)
+  - [Entity Lifecycle Model in JPA & Hibernate](https://thorben-janssen.com/entity-lifecycle-model/)
     - [Field vs property access](http://stackoverflow.com/a/6084701/548473)
     - [Hibernate: введение и написания Hello world приложения](https://web.archive.org/web/20200810114404/http://www.quizful.net/post/Hibernate-3-introduction-and-writing-hello-world-application)
     - [15 reasons why we need to choose Hibernate over JDBC](https://web.archive.org/web/20211201122631/https://habiletechnologies.com/blog/reasons-to-choose-hibernate-over-jdbc/#fin_form_pop)
@@ -137,11 +137,10 @@
    - <a href="http://www.youtube.com/watch?v=YzOTZTt-PR0">Видео: Николай Алименков — Босиком по граблям Hibernate</a>
    - <a href="https://www.youtube.com/watch?v=b52Qz6qlic0">Видео: Николай Алименков — Сделаем Hibernate снова быстрым</a>
    - <a href="https://www.ibm.com/developerworks/ru/library/j-ts2/">Стратегии работы с транзакциями</a>
-   - <a href="https://easyjava.ru/tag/jpa/">Примеры работы с JPA</a>
    - <a href="http://www.byteslounge.com/tutorials/spring-transaction-propagation-tutorial">Spring transaction propagation tutorial</a>
    - <a href="https://dzone.com/refcardz/getting-started-with-jpa">Getting Started with JPA</a>
    - <a href="http://en.wikibooks.org/wiki/Java_Persistence">Java Persistence</a>
-   - <a href="https://easyjava.ru/category/data/jpa/">Разделы по Java Persistence API</a>
+   - <a href="https://web.archive.org/web/20220519045236/https://easyjava.ru/category/data/jpa/">Разделы по Java Persistence API</a>
    - <a href="http://docs.spring.io/spring-framework/docs/4.0.x/spring-framework-reference/html/transaction.html">Spring Framework transaction management</a>
    - <a href="http://www.baeldung.com/persistence-with-spring-series/">Spring Persistence Tutorial</a>
    - <a href="http://www.objectdb.com/java/jpa/persistence/managed#Entity_Object_Life_Cycle">Working with JPA Entity Objects</a>
@@ -159,7 +158,7 @@
 >  Есть несколько аналогичных "встроенных" баз данных. H2, HSQLDB, Derby, SQLite. Почему был выбран HSQLDB?
 
 Просто с ней приходилось работать. HSQLDB и H2 наиболее популярны. В миграции на spring-boot будем использовать H2.
-Здесь интересное краткое описание <a href="http://easyjava.ru/data/vstraivaemye-bazy-dannyx-v-java/">встраиваемых баз данных в Java</a>. 
+Здесь интересное краткое описание <a href="https://web.archive.org/web/20220519045402/https://easyjava.ru/data/vstraivaemye-bazy-dannyx-v-java/">встраиваемых баз данных в Java</a>. 
 В HSQLDB нет репликаций, кластеризации и объем данным ограничен несколькими TB. Для большого количества приложений она подходит и для продакшена. См.
 - <a href="http://stackoverflow.com/questions/4152911/what-is-hsqldb-limitations">What is HSQLDB limitations?</a>
 - <a href="https://habrahabr.ru/sandbox/23199/">HSQLDB в режиме in-process</a>
